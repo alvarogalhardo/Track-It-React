@@ -1,42 +1,64 @@
 import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import logo from '../assets/images/logo.jpg'
-import { Link } from "react-router-dom";
+import logo from "../assets/images/logo.jpg";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../assets/constants/BASE_URL";
 
-export default function SignUpPage(){
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('');
-    const [profileName, setProfileName] = useState('');
-    const [profilePicture, setProfilePicture] = useState('');
-    const postOBJ = {
-        email: email,
-        name: profileName,
-        image: profilePicture,
-        password: password
-    }
-    
+export default function SignUpPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [profileName, setProfileName] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const postOBJ = {
+    email: email,
+    name: profileName,
+    image: profilePicture,
+    password: password,
+  };
 
-    function handleSubmit(e){
-        e.preventDefault();
-        const promisse = axios.post(`${BASE_URL}/auth/sign-up`, postOBJ);
-        promisse.then((e)=>console.log(e));
-        promisse.catch((e)=>console.log(e));
-    }
-    return (<Container>
-        <img src={logo} alt='logo' />
-        <form onSubmit={handleSubmit}>
-        <Input placeholder="email" type="email" onChange={(e)=>setEmail(e.target.value)}/>
-        <Input placeholder="senha" type="password" onChange={(e)=>setPassword(e.target.value)}/>
-        <Input placeholder="nome" type="text" onChange={(e)=>setProfileName(e.target.value)}/>
-        <Input placeholder="foto" type="url" onChange={(e)=>setProfilePicture(e.target.value)}/>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const promisse = axios.post(`${BASE_URL}/auth/sign-up`, postOBJ);
+    promisse.then((e) => {
+      if(e.status===200){
+        alert('Usuário cadastrado com sucesso!');
+        navigate('/');
+      }
+    });
+    promisse.catch((e) => console.log(e));
+  }
+  return (
+    <Container>
+      <img src={logo} alt="logo" />
+      <form onSubmit={handleSubmit}>
+        <Input
+          placeholder="email"
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          placeholder="senha"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Input
+          placeholder="nome"
+          type="text"
+          onChange={(e) => setProfileName(e.target.value)}
+        />
+        <Input
+          placeholder="foto"
+          type="url"
+          onChange={(e) => setProfilePicture(e.target.value)}
+        />
         <button>Cadastrar</button>
-        </form>
-        <Link to="/">Já tem uma conta? Faça login!</Link>
-    </Container>)
+      </form>
+      <Link to="/">Já tem uma conta? Faça login!</Link>
+    </Container>
+  );
 }
-
 
 const Container = styled.main`
   display: flex;
@@ -56,7 +78,7 @@ const Container = styled.main`
     margin-bottom: 20px;
   }
   a {
-    color: #52B6FF;
+    color: #52b6ff;
     font-size: 14px;
     text-decoration: underline;
   }

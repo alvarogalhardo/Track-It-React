@@ -1,13 +1,19 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../assets/constants/BASE_URL.js";
 import logo from "../assets/images/logo.jpg";
+import { AuthContext } from "../contexts/AuthContext.js";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { setAuth } = useContext(AuthContext);
+  
   const postOBJ = {
     email: email,
     password: password,
@@ -16,8 +22,15 @@ export default function LoginPage() {
   function handleSubmit(e) {
     e.preventDefault();
     const promisse = axios.post(`${BASE_URL}/auth/login`, postOBJ);
-    promisse.then((e) => console.log(e));
-    promisse.catch((e) => console.log(e));
+    promisse.then((e) => {
+      if (e.status === 200) {
+        setAuth(true);
+        navigate("/habitos");
+      }
+    });
+    promisse.catch(() =>
+      alert("Algo deu errado, verifique seus dados e tente novamente")
+    );
   }
   return (
     <Container>
@@ -58,7 +71,7 @@ const Container = styled.main`
     margin-bottom: 20px;
   }
   a {
-    color: #52B6FF;
+    color: #52b6ff;
     font-size: 14px;
     text-decoration: underline;
   }

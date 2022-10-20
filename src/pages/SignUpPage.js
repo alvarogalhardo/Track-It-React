@@ -82,6 +82,12 @@ const Container = styled.main`
     font-size: 14px;
     text-decoration: underline;
   }
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+  }
 `;
 
 const Input = styled.input`

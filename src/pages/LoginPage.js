@@ -4,7 +4,8 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../assets/constants/BASE_URL.js";
 import logo from "../assets/images/logo.jpg";
-import { AuthContext } from "../contexts/AuthContext.js";
+import { TokenContext } from "../contexts/TokenContext.js";
+import { UserContext } from "../contexts/UserContext.js";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -12,8 +13,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setAuth } = useContext(AuthContext);
-  
+  const { setToken } = useContext(TokenContext);
+  const { setUser } = useContext(UserContext);
+
   const postOBJ = {
     email: email,
     password: password,
@@ -23,8 +25,9 @@ export default function LoginPage() {
     e.preventDefault();
     const promisse = axios.post(`${BASE_URL}/auth/login`, postOBJ);
     promisse.then((e) => {
+      setUser({ name: `${e.data.name}`, image: `${e.data.image}` });
       if (e.status === 200) {
-        setAuth(true);
+        setToken(e.data.token);
         navigate("/habitos");
       }
     });
@@ -74,6 +77,12 @@ const Container = styled.main`
     color: #52b6ff;
     font-size: 14px;
     text-decoration: underline;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 `;
 

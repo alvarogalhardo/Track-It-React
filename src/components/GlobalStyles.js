@@ -23,7 +23,7 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font-family: 'Lexend Deca', sans-serif;
+	font-family: 'Lexend Deca';
 	vertical-align: baseline;
     text-decoration: none;
 }
@@ -31,7 +31,10 @@ button{
     all: unset;
     cursor: pointer;
 }
-
+*{
+	box-sizing: border-box;
+}
+a{all:unset}
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;

@@ -1,15 +1,17 @@
 import { useContext } from "react";
-import { AuthContext } from "./contexts/AuthContext";
+import { TokenContext } from "./contexts/TokenContext";
 import GlobalStyle from "./components/GlobalStyles";
 import PrivateRoutes from "./routes/Private.Routes";
 import PublicRoutes from "./routes/Public.Routes";
+import UserProvider from "./contexts/UserContext";
 
 export default function App() {
-  const { auth } = useContext(AuthContext);
+  const { token } = useContext(TokenContext);
+
   return (
     <>
       <GlobalStyle />
-      {auth ? <PrivateRoutes /> : <PublicRoutes />}
+      {token ? <PrivateRoutes token={token} /> : <PublicRoutes />}
     </>
   );
 }

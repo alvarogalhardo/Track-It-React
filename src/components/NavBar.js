@@ -1,30 +1,37 @@
 import styled from "styled-components";
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 
-export default function NavBar() {
-    return (
-        <Header>
-            <Link to="/habitos">TrackIt</Link>
-        </Header>
-    )
+export default function NavBar({ user }) {
+  return (
+    <Header>
+      <p>TrackIt</p>
+      <img src={user.image} alt="profile picture" />
+    </Header>
+  );
 }
 
 const Header = styled.header`
-position : fixed;
-top:0;
-left: 0;
-width: 100%;
-height: 70px;
-background: #126BA5;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 18px 10px;
-a{
-font-family: 'Playball';
-font-size: 40px;
-color:white;
-}
-`
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #126ba5;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 10px;
+  padding-left: 10px;
+  p {
+    font-family: "Playball";
+    font-size: 40px;
+    color: white;
+  }
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+`;

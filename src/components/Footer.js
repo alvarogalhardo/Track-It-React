@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <Container>
       <Link to="/habitos">Hábitos</Link>
-      bola do hoje
+      <Link to="/hoje">hoje</Link>
       <Link to="/historico">Histórico</Link>
     </Container>
   );

@@ -1,12 +1,34 @@
 import { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { BASE_URL } from "../assets/constants/BASE_URL";
 import Weekday from "./Weekday";
+import { WEEKDAYS } from "../assets/constants/WEEKDAYS";
 
-export default function NewHabit({ setNewHabit }) {
-  const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
+export default function NewHabit({ setNewHabit, token, setRender, render }) {
   const [input, setInput] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
-  function handleSave() {}
+
+  const postOBJ = {
+    name: input,
+    days: selectedDays,
+  };
+
+  const CONFIG = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  function handleSave() {
+    setSelectedDays(selectedDays.sort((a, b) => a - b));
+    const promisse = axios.post(`${BASE_URL}/habits`, postOBJ, CONFIG);
+    promisse.then((e) => {
+      setNewHabit(false);
+      setRender(!render);
+    });
+    promisse.catch((e) => console.log(e));
+  }
   return (
     <Container>
       <Input
@@ -15,7 +37,7 @@ export default function NewHabit({ setNewHabit }) {
         onChange={(e) => setInput(e.target.value)}
       />
       <div>
-        {weekdays.map((d, i) => (
+        {WEEKDAYS.map((d, i) => (
           <Weekday
             key={i}
             d={d}

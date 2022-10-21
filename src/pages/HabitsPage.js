@@ -5,23 +5,24 @@ import { BASE_URL } from "../assets/constants/BASE_URL";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import NewHabit from "../components/NewHabit";
+import HabitCard from "../components/HabitCard";
 
 export default function TodayPage({ token, user }) {
   const [habits, setHabits] = useState([]);
   const [newHabit, setNewHabit] = useState(false);
-
-  const config = {
+  const [render, setRender] = useState(true)
+  const CONFIG = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
   useEffect(() => {
-    const promisse = axios.get(`${BASE_URL}/habits`, config);
+    const promisse = axios.get(`${BASE_URL}/habits`, CONFIG);
     promisse.then((e) => setHabits(e.data));
     promisse.catch((e) => console.log(e));
-  }, []);
-  
+  }, [render]);
+
   return (
     <Container>
       <NavBar user={user} />
@@ -30,9 +31,18 @@ export default function TodayPage({ token, user }) {
         <button onClick={() => setNewHabit(!newHabit)}>+</button>
       </Header>
       <Main>
-        {newHabit ? <NewHabit setNewHabit={setNewHabit}/> : null}
+        {newHabit ? (
+          <NewHabit
+            setNewHabit={setNewHabit}
+            token={token}
+            setHabits={setHabits}
+            habits={habits}
+            setRender={setRender}
+            render={render}
+          />
+        ) : null}
         {habits.length > 0
-          ? "vc tem habitos"
+          ? habits.map((h) => <HabitCard habit={h} key={h.id} token={token} setRender={setRender} render={render}/>)
           : "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!"}
       </Main>
       <Footer />
@@ -69,6 +79,8 @@ const Container = styled.div`
   padding-left: 20px;
   color: #666666;
   font-size: 18px;
+  padding-bottom: 100px;
+  overflow-y: scroll;
 `;
 
 const Main = styled.main`

@@ -7,7 +7,7 @@ export default function Weekday({ d, setSelectedDays ,selectedDays, index}) {
     function handleClick(){
         setSelected(!selected)
         if(!selected){
-            setSelectedDays([...selectedDays, index])
+            setSelectedDays([...selectedDays, (index)])
         } else {
             setSelectedDays(selectedDays.filter((element)=> element !== index))
         }

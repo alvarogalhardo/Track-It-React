@@ -21,13 +21,14 @@ export default function SignUpPage() {
   function handleSubmit(e) {
     e.preventDefault();
     const promisse = axios.post(`${BASE_URL}/auth/sign-up`, postOBJ);
+    console.log(postOBJ);
     promisse.then((e) => {
       if(e.status===200){
         alert('Usuário cadastrado com sucesso!');
         navigate('/');
       }
     });
-    promisse.catch((e) => console.log(e));
+    promisse.catch((e) => alert(e.response.data.message));
   }
   return (
     <Container>

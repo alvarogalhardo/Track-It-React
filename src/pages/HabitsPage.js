@@ -1,16 +1,21 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { BASE_URL } from "../assets/constants/BASE_URL";
+import { LoadingContext } from "../contexts/LoadingContext.js";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import NewHabit from "../components/NewHabit";
+import NewHabit from "../components/NewHabitCard";
 import HabitCard from "../components/HabitCard";
 
-export default function TodayPage({ token, user }) {
+export default function TodayPage({ token, user,progress }) {
   const [habits, setHabits] = useState([]);
   const [newHabit, setNewHabit] = useState(false);
-  const [render, setRender] = useState(true)
+  const [input, setInput] = useState("");
+
+  const [render, setRender] = useState(true);
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
+
   const CONFIG = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -35,17 +40,27 @@ export default function TodayPage({ token, user }) {
           <NewHabit
             setNewHabit={setNewHabit}
             token={token}
-            setHabits={setHabits}
-            habits={habits}
             setRender={setRender}
             render={render}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            input={input}
+            setInput={setInput}
           />
         ) : null}
         {habits.length > 0
-          ? habits.map((h) => <HabitCard habit={h} key={h.id} token={token} setRender={setRender} render={render}/>)
+          ? habits.map((h) => (
+              <HabitCard
+                habit={h}
+                key={h.id}
+                token={token}
+                setRender={setRender}
+                render={render}
+              />
+            ))
           : "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!"}
       </Main>
-      <Footer />
+      <Footer progress={progress}/>
     </Container>
   );
 }

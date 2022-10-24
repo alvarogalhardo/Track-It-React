@@ -2,11 +2,20 @@ import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { BASE_URL } from "../assets/constants/BASE_URL";
+import { ThreeDots } from "react-loader-spinner";
 import Weekday from "./Weekday";
 import { WEEKDAYS } from "../assets/constants/WEEKDAYS";
 
-export default function NewHabit({ setNewHabit, token, setRender, render }) {
-  const [input, setInput] = useState("");
+export default function NewHabit({
+  setNewHabit,
+  token,
+  setRender,
+  render,
+  isLoading,
+  setIsLoading,
+  input,
+  setInput,
+}) {
   const [selectedDays, setSelectedDays] = useState([]);
 
   const postOBJ = {
@@ -21,27 +30,38 @@ export default function NewHabit({ setNewHabit, token, setRender, render }) {
   };
 
   function handleSave() {
+    if(input===""){
+      alert('Insira um hábito');
+      return;
+    }
     setSelectedDays(selectedDays.sort((a, b) => a - b));
+    setIsLoading(true);
     const promisse = axios.post(`${BASE_URL}/habits`, postOBJ, CONFIG);
     promisse.then((e) => {
       setNewHabit(false);
       setRender(!render);
+      setIsLoading(false);
     });
-    promisse.catch((e) => console.log(e));
+    promisse.catch(() => setIsLoading(false));
   }
   return (
     <Container>
-      <Input
-        type="text"
-        placeholder="nome do hábito"
-        onChange={(e) => setInput(e.target.value)}
-      />
+      {isLoading ? (
+        <Disabled>{input}</Disabled>
+      ) : (
+        <Input
+          type="text"
+          placeholder="nome do hábito"
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+        />
+      )}
       <div>
         {WEEKDAYS.map((d, i) => (
           <Weekday
             key={i}
             d={d}
-            index={i + 1}
+            index={i}
             setSelectedDays={setSelectedDays}
             selectedDays={selectedDays}
           />
@@ -49,7 +69,23 @@ export default function NewHabit({ setNewHabit, token, setRender, render }) {
       </div>
       <Buttons>
         <Cancel onClick={() => setNewHabit(false)}>Cancelar</Cancel>
-        <Save onClick={handleSave}>Salvar</Save>
+        {isLoading ? (
+          <Save>
+             {" "}
+            <ThreeDots
+              height="20"
+              width="40"
+              radius="9"
+              color="white"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
+          </Save>
+        ) : (
+          <Save onClick={handleSave}>Salvar</Save>
+        )}
       </Buttons>
     </Container>
   );
@@ -104,4 +140,18 @@ const Save = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Disabled = styled.div`
+  width: 90%;
+  height: 45px;
+  border-radius: 5px;
+  border: 1px solid #d4d4d4;
+  color: #afafaf;
+  margin-bottom: 5px;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 20px;
 `;

@@ -34,7 +34,7 @@ export default function TodayPage({ token, user, progress }) {
     }
     let result=0;
     result = cont / habits.length;
-    return result * 100;
+    return Math.floor(result * 100);
   }
 
   useEffect(() => {

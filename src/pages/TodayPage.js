@@ -14,7 +14,6 @@ export default function TodayPage({ token, user, progress }) {
   const { setProgress } = useContext(ProgressContext);
   const dayjs = require("dayjs");
   const day = dayjs().locale("pt-br").format("dddd, DD/MM");
-  console.log(progress);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

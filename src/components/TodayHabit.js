@@ -4,14 +4,7 @@ import { BASE_URL } from "../assets/constants/BASE_URL";
 import { useContext, useState } from "react";
 import { ProgressContext } from "../contexts/ProgressContext";
 
-export default function TodayHabit({
-  habit,
-  token,
-  setRender,
-  render,
-  setDoneHabits,
-  doneHabitsArray,
-}) {
+export default function TodayHabit({ habit, token, setRender, render }) {
   const { id, name, done, currentSequence, highestSequence } = habit;
   const [checked, setChecked] = useState(done);
   const CONFIG = {
@@ -89,6 +82,7 @@ const Icon = styled.div`
   height: auto;
   background-color: ${(props) => (props.checked ? "#8FC549" : "#EBEBEB")};
   border-radius: 5px;
+  cursor: pointer;
   ion-icon {
     width: 100%;
     height: 100%;

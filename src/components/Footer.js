@@ -40,6 +40,9 @@ const Container = styled.footer`
   color: #52b6ff;
   background-color: white;
   z-index: 1;
+  a{
+    cursor: pointer;
+  }
 `;
 
 const Circle = styled.div`

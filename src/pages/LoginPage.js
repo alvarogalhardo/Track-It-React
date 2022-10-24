@@ -117,6 +117,7 @@ const Container = styled.main`
     color: #52b6ff;
     font-size: 14px;
     text-decoration: underline;
+    cursor: pointer;
   }
   form {
     display: flex;
